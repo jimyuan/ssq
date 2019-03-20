@@ -8,7 +8,10 @@
     </div>
 
     <div class="item-row tongji-btn">
-      <button class="btn">神啊，请赐予我靓号吧！</button>
+      <button class="btn" @click="handleData">闪亮赋能</button>
+    </div>
+    <div class="item-row">
+
     </div>
   </div>
 </template>
@@ -25,7 +28,9 @@ export default {
   data () {
     return {
       sampleCount: 100,
-      min: 10
+      min: 10,
+      redBallsGroup: [],
+      blueBallsGroup: []
     }
   },
   computed: {
@@ -34,8 +39,23 @@ export default {
     }
   },
   methods: {
-    adjustSample () {
-
+    handleData () {
+      const ssq = [...this.ssq]
+      const sampleCount = this.sampleCount
+      let tmpBall = null
+      if (this.max > sampleCount) ssq.length = sampleCount
+      this.redBallsGroup = []
+      this.blueBallsGroup = []
+      for (let ball of ssq) {
+        for (let num = 1; num <= 7; num++) {
+          tmpBall = ball[num]
+          if (num === 7) {
+            this.blueBallsGroup.push(tmpBall)
+          } else {
+            this.redBallsGroup.push(tmpBall)
+          }
+        }
+      }
     }
   },
   mounted () {
