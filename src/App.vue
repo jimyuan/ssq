@@ -1,28 +1,29 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <section id="app">
+    <ssq-info :ssq="ssq" v-if="ssq.length>0"></ssq-info>
+    <ssq-analy :ssq="ssq" v-if="ssq.length>0"></ssq-analy>
+  </section>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from 'axios'
+import SsqInfo from '@/components/SsqInfo'
+import SsqAnaly from '@/components/SsqAnaly'
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      ssq: []
+    }
+  },
+  components: { SsqInfo, SsqAnaly },
+  created () {
+    axios({
+      url: 'data.txt',
+      responseType: 'text'
+    }).then(req => {
+      this.ssq = req.data.split('\n').map(item => item.split(','))
+    })
   }
 }
 </script>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
