@@ -11,11 +11,28 @@
       <button class="btn" @click="handleData">闪亮赋能</button>
     </div>
     <div class="item-row">
-      <span class="count-ball red-ball" v-for="(ball, idx) of redBallsUnit" :key="idx">{{ball}}({{redBallsCount[ball]}})</span>
+      <span class="count-ball red-ball"
+        v-for="(ball, idx) of redBallsUnit"
+        :key="idx"
+        @click="pickBalls(ball, false)">
+          {{ball}}({{redBallsCount[ball]}})
+      </span>
     </div>
     <div class="item-row">
-      <span class="count-ball blue-ball" v-for="(ball, idx) of blueBallsUnit" :key="idx">{{ball}}({{blueBallsCount[ball]}})</span>
+      <span class="count-ball blue-ball"
+        v-for="(ball, idx) of blueBallsUnit"
+        :key="idx"
+        @click="pickBalls(ball)">
+        {{ball}}({{blueBallsCount[ball]}})
+      </span>
     </div>
+    <template v-if="pickedRedBalls.length>0 || pickedBlueBalls.length>0">
+      <div class="item-title">选取结果</div>
+      <div class="item-row">
+        <span class="count-ball red-ball" v-for="(ball, idx) of pickedRedBalls">{{ball}}</span>
+        <span class="count-ball blue-ball" v-for="(ball, idx) of pickedBlueBalls">{{ball}}</span>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -33,7 +50,9 @@ export default {
       sampleCount: 100,
       min: 10,
       redBallsGroup: [],
-      blueBallsGroup: []
+      blueBallsGroup: [],
+      pickedRedBalls: [],
+      pickedBlueBalls: []
     }
   },
   computed: {
@@ -75,6 +94,25 @@ export default {
           } else {
             this.redBallsGroup.push(tmpBall)
           }
+        }
+      }
+    },
+    pickBalls (num, blueFlag = true) {
+      if (blueFlag) {
+        const idx = this.pickedBlueBalls.indexOf(num)
+        if (idx === -1) {
+          this.pickedBlueBalls.push(num)
+          this.pickedBlueBalls.sort()
+        } else {
+          this.pickedBlueBalls.splice(idx, 1)
+        }
+      } else {
+        const idx = this.pickedRedBalls.indexOf(num)
+        if (idx === -1) {
+          this.pickedRedBalls.push(num)
+          this.pickedRedBalls.sort()
+        } else {
+          this.pickedRedBalls.splice(idx, 1)
         }
       }
     }
