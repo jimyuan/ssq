@@ -1,29 +1,6 @@
 # bless-me-lucky
+双色球选取工具，仅供娱乐！
 
-## Project setup
-```
-npm install
-```
+如何运行？懂的自然懂！
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+采用该工具选取双色球，如中奖，请自觉分一半给本人，切记！
