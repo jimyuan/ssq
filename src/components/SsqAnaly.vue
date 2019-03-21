@@ -11,7 +11,10 @@
       <button class="btn" @click="handleData">闪亮赋能</button>
     </div>
     <div class="item-row">
-
+      <span class="count-ball red-ball" v-for="(ball, idx) of redBallsUnit" :key="idx">{{ball}}({{redBallsCount[ball]}})</span>
+    </div>
+    <div class="item-row">
+      <span class="count-ball blue-ball" v-for="(ball, idx) of blueBallsUnit" :key="idx">{{ball}}({{blueBallsCount[ball]}})</span>
     </div>
   </div>
 </template>
@@ -36,6 +39,24 @@ export default {
   computed: {
     max () {
       return this.ssq.length
+    },
+    redBallsUnit () {
+      return [...new Set(this.redBallsGroup)].sort()
+    },
+    blueBallsUnit () {
+      return [...new Set(this.blueBallsGroup)].sort()
+    },
+    redBallsCount () {
+      return this.redBallsGroup.reduce((elements, ele) => {
+        ele in elements ? elements[ele]++ : (elements[ele] = 1)
+        return elements
+      }, {})
+    },
+    blueBallsCount () {
+      return this.blueBallsGroup.reduce((elements, ele) => {
+        ele in elements ? elements[ele]++ : (elements[ele] = 1)
+        return elements
+      }, {})
     }
   },
   methods: {
