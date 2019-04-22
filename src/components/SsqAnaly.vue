@@ -32,18 +32,6 @@
           {{ ball[0] }}({{ ball[1] }})
       </span>
     </div>
-    <!-- 手工选号结果 -->
-    <template v-if="pickedRedBalls.length + pickedBlueBalls.length > 0">
-      <div class="item-title">选取结果</div>
-      <transition-group name="list-complete" tag="div" class="item-row">
-        <span class="count-ball red-ball selected list-complete-item"
-        v-for="ball of pickedRedBalls" :key="`red-${ball}`"
-        v-text="ball"></span>
-        <span class="count-ball blue-ball selected list-complete-item"
-        v-for="ball of pickedBlueBalls" :key="`blue-${ball}`"
-        v-text="ball"></span>
-      </transition-group>
-    </template>
   </div>
 </template>
 
@@ -115,7 +103,7 @@ export default {
       }
     },
     /**
-     * 选球
+     * 下注选球
      * @param  {[type]}  num             [description]
      * @param  {Boolean} [blueFlag=true] [description]
      */
@@ -137,6 +125,11 @@ export default {
           this.pickedRedBalls.splice(idx, 1)
         }
       }
+      // 将选中的数据存入状态机
+      this.$store.commit('updatePickedBalls', {
+        red: this.pickedRedBalls,
+        blue: this.pickedBlueBalls
+      })
     }
   }
 }
