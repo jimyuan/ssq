@@ -5,8 +5,8 @@
     <div class="item-value" v-text="ssq.length"></div>
     <div class="item-label">时间范围：</div>
     <div class="item-value">
-      <strong>{{ssqNew[ssqCol-1]}}</strong> ~
-      <strong>{{ssqOld[ssqCol-1]}}</strong>
+      <strong>{{ssqNew.slice(-1)[0]}}</strong> ~
+      <strong>{{ssqOld.slice(-1)[0]}}</strong>
     </div>
     <div class="item-label">最新期号：</div>
     <div class="item-value" v-text="ssqNew[0]"></div>
@@ -30,18 +30,17 @@ export default {
     }
   },
   computed: {
+    // 最新一期数据
     ssqNew () {
       return this.ssq[0]
     },
+    // 最早一期数据
     ssqOld () {
-      const ssq = [...this.ssq]
-      return ssq.pop()
+      return this.ssq.slice(-1)[0]
     },
-    ssqCol () {
-      return this.ssq[0].length
-    },
+    // 最新一期中奖信息
     ssqNewBalls () {
-      return this.ssq[0].filter((val, idx) => (idx > 0 && idx < 8))
+      return this.ssqNew.filter((val, idx) => (idx > 0 && idx < 8))
     }
   }
 }

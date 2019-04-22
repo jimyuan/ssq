@@ -131,16 +131,17 @@ body {
 
 .tongji-btn {
   text-align: center;
-  padding: 4rem 0;
+  padding: 2rem 0 0;
 }
 
 .btn {
   line-height: 3rem;
+  border-radius: 1.5rem;
   border-width: 0;
   cursor: pointer;
   background: #f00;
   color: #fff;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   position: relative;
 
   &:focus {
@@ -150,6 +151,7 @@ body {
   &:hover::after {
     content: '';
     position: absolute;
+    border-radius: inherit;
     top: 0;
     left: 0;
     right: 0;
@@ -170,8 +172,7 @@ body {
   line-height: 3rem;
   margin: 0 1rem 1rem 0;
   font-size: 12px;
-  background-image: radial-gradient(circle at 35% 30%, rgba(#fff, 0.8), transparent);
-  transition: box-shadow 0.8s ease;
+  transition: box-shadow 0.5s ease;
   
   &.red-ball {
     background-color: red;
@@ -181,9 +182,33 @@ body {
     background-color: blue;
   }
   
-  &:hover {
-    box-shadow: 0.5rem 1rem 1rem #aaa;
+  &.selected {
+    background-image: radial-gradient(circle at 30% 30%, rgba(#fff, 0.9), transparent 60%);
+    box-shadow: 0.5rem 1rem 1rem #666;
   }
+}
+
+.text-red {
+  font-weight: bold;
+  color: red;
+}
+
+.text-blue {
+  font-weight: bold;
+  color: blue;
+}
+
+.list-complete-item {
+  font-size: 1.4em;
+  transition: all 0.5s;
+}
+.list-complete-enter,
+.list-complete-leave-to {
+  opacity: 0;
+  transform: scale(0.5) translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
 }
 
 @keyframes over {

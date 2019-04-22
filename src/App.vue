@@ -22,7 +22,7 @@ export default {
       url: 'data.txt',
       responseType: 'text'
     }).then(req => {
-      this.ssq = req.data.split('\n').map(item => item.split(','))
+      this.ssq = req.data.replace(/\n$/, '').split('\n').map(item => item.split(','))
     })
   }
 }

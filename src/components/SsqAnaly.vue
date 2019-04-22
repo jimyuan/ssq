@@ -6,37 +6,63 @@
       <input type="range" class="jr" :min="min" :max="max" v-model="sampleCount" step="10">
       近 {{sampleCount}} 期
     </div>
-
+    <!-- button 查询指定期数内的双色球出现频率 -->
     <div class="item-row tongji-btn">
       <button class="btn" @click="handleData">闪亮赋能</button>
     </div>
-    <div class="item-row">
+    <!-- 红球统计数据 -->
+    <div class="item-row" v-if="redBallsCount.length>0">
+      <p class="text-red">红球统计数据：</p>
       <span class="count-ball red-ball"
-        v-for="(ball, idx) of redBallsUnit"
-        :key="idx"
-        @click="pickBalls(ball, false)">
-          {{ball}}({{redBallsCount[ball]}})
+        :class="{selected: pickedRedBalls.indexOf(ball[0])>-1}"
+        v-for="ball of redBallsCount"
+        :key="`red-${ball[0]}`"
+        @click="pickBalls(ball[0], false)">
+          {{ ball[0] }}({{ ball[1] }})
       </span>
     </div>
-    <div class="item-row">
+    <!-- 篮球统计数据 -->
+    <div class="item-row" v-if="blueBallsCount.length>0">
+      <p class="text-blue">篮球统计数据：</p>
       <span class="count-ball blue-ball"
-        v-for="(ball, idx) of blueBallsUnit"
-        :key="idx"
-        @click="pickBalls(ball)">
-        {{ball}}({{blueBallsCount[ball]}})
+        :class="{selected: pickedBlueBalls.indexOf(ball[0])>-1}"
+        v-for="ball of blueBallsCount"
+        :key="`blue-${ball[0]}`"
+        @click="pickBalls(ball[0])">
+          {{ ball[0] }}({{ ball[1] }})
       </span>
     </div>
-    <template v-if="pickedRedBalls.length>0 || pickedBlueBalls.length>0">
+    <!-- 手工选号结果 -->
+    <template v-if="pickedRedBalls.length + pickedBlueBalls.length > 0">
       <div class="item-title">选取结果</div>
-      <div class="item-row">
-        <span class="count-ball red-ball" v-for="(ball, idx) of pickedRedBalls">{{ball}}</span>
-        <span class="count-ball blue-ball" v-for="(ball, idx) of pickedBlueBalls">{{ball}}</span>
-      </div>
+      <transition-group name="list-complete" tag="div" class="item-row">
+        <span class="count-ball red-ball selected list-complete-item"
+        v-for="ball of pickedRedBalls" :key="`red-${ball}`"
+        v-text="ball"></span>
+        <span class="count-ball blue-ball selected list-complete-item"
+        v-for="ball of pickedBlueBalls" :key="`blue-${ball}`"
+        v-text="ball"></span>
+      </transition-group>
     </template>
   </div>
 </template>
 
 <script>
+/**
+ * 统计各色球的出现次数，然后按照降序排列
+ * @param  {[Array]} arr [各期开球数据]
+ * @return {[Array]}     [排完序的结果]
+ */
+const sortable = arr => {
+  const ballsCount = arr.reduce((elements, ele) => {
+    ele in elements ? elements[ele]++ : (elements[ele] = 1)
+    return elements
+  }, {})
+  return Array.from([...new Set(arr)])
+    .sort((a, b) => ballsCount[b] - ballsCount[a])
+    .map(item => [item, ballsCount[item]])
+}
+
 export default {
   name: 'ssq-analy',
   props: {
@@ -49,7 +75,9 @@ export default {
     return {
       sampleCount: 100,
       min: 10,
+      // 指定期数的所有红球号
       redBallsGroup: [],
+      // 指定期数的所有兰球号
       blueBallsGroup: [],
       pickedRedBalls: [],
       pickedBlueBalls: []
@@ -59,44 +87,38 @@ export default {
     max () {
       return this.ssq.length
     },
-    redBallsUnit () {
-      return [...new Set(this.redBallsGroup)].sort()
-    },
-    blueBallsUnit () {
-      return [...new Set(this.blueBallsGroup)].sort()
-    },
     redBallsCount () {
-      return this.redBallsGroup.reduce((elements, ele) => {
-        ele in elements ? elements[ele]++ : (elements[ele] = 1)
-        return elements
-      }, {})
+      return sortable(this.redBallsGroup)
     },
     blueBallsCount () {
-      return this.blueBallsGroup.reduce((elements, ele) => {
-        ele in elements ? elements[ele]++ : (elements[ele] = 1)
-        return elements
-      }, {})
+      return sortable(this.blueBallsGroup)
     }
   },
   methods: {
+    /**
+     * 按钮事件，获取最新期数中的红篮球出现次数
+     */
     handleData () {
+      // 获取父组件传来的完整历史数据
       const ssq = [...this.ssq]
+      // 设定要选取的数据长度，默认 100 期
       const sampleCount = this.sampleCount
-      let tmpBall = null
       if (this.max > sampleCount) ssq.length = sampleCount
       this.redBallsGroup = []
       this.blueBallsGroup = []
       for (let ball of ssq) {
         for (let num = 1; num <= 7; num++) {
-          tmpBall = ball[num]
-          if (num === 7) {
-            this.blueBallsGroup.push(tmpBall)
-          } else {
-            this.redBallsGroup.push(tmpBall)
-          }
+          num === 7
+            ? this.blueBallsGroup.push(ball[num])
+            : this.redBallsGroup.push(ball[num])
         }
       }
     },
+    /**
+     * 选球
+     * @param  {[type]}  num             [description]
+     * @param  {Boolean} [blueFlag=true] [description]
+     */
     pickBalls (num, blueFlag = true) {
       if (blueFlag) {
         const idx = this.pickedBlueBalls.indexOf(num)
@@ -116,8 +138,6 @@ export default {
         }
       }
     }
-  },
-  mounted () {
   }
 }
 </script>
