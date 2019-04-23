@@ -4,6 +4,10 @@
     <ssq-analy :ssq="ssq" v-if="ssq.length>0"></ssq-analy>
     <picked-bets :bets="pickedBalls" v-if="validResults"></picked-bets>
     <bets-detail :bets="pickedBalls" v-if="validResults"></bets-detail>
+    <div class="loading" v-if="loadingFlag">
+      <img src="loading.svg" alt="loading">
+      <span>数据加载中...</span>
+    </div>
   </section>
 </template>
 
@@ -17,7 +21,8 @@ export default {
   name: 'app',
   data () {
     return {
-      ssq: []
+      ssq: [],
+      loadingFlag: true
     }
   },
   components: { SsqInfo, SsqAnaly, PickedBets, BetsDetail },
@@ -31,11 +36,13 @@ export default {
     }
   },
   created () {
+    this.loadingFlag = true
     axios({
       url: 'data.txt',
       responseType: 'text'
     }).then(req => {
       this.ssq = req.data.replace(/\n$/, '').split('\n').map(item => item.split(','))
+      this.loadingFlag = false
     })
   }
 }
