@@ -3,6 +3,7 @@ const productionSourceMap = !productionFlag
 const cssSourceMap = !productionFlag
 module.exports = {
   publicPath: productionFlag ? './' : '/',
+  outputDir: 'docs',
   lintOnSave: false,
   filenameHashing: false,
   productionSourceMap,
