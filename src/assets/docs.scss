@@ -139,14 +139,14 @@ body {
 }
 
 .btn {
-  line-height: 3rem;
-  border-radius: 1.5rem;
+  line-height: 2rem;
+  border-radius: 1rem;
   border-width: 0;
-  cursor: pointer;
   background: #f00;
   color: #fff;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   position: relative;
+  cursor: pointer;
 
   &:focus {
     outline: none;
@@ -243,5 +243,9 @@ body {
   }
   .jr {
     width: 80%;
+  }
+  .btn {
+    line-height: 3rem;
+    border-radius: 1.5rem;
   }
 }
