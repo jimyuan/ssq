@@ -2,7 +2,8 @@
   <section id="app">
     <ssq-info :ssq="ssq" v-if="ssq.length>0"></ssq-info>
     <ssq-analy :ssq="ssq" v-if="ssq.length>0"></ssq-analy>
-    <picked-balls :balls="pickedBalls" v-if="validResults"></picked-balls>
+    <picked-bets :bets="pickedBalls" v-if="validResults"></picked-bets>
+    <bets-detail :bets="pickedBalls" v-if="validResults"></bets-detail>
   </section>
 </template>
 
@@ -10,7 +11,8 @@
 import axios from 'axios'
 import SsqInfo from '@/components/SsqInfo'
 import SsqAnaly from '@/components/SsqAnaly'
-import PickedBalls from '@/components/PickedBalls'
+import PickedBets from '@/components/PickedBets'
+import BetsDetail from '@/components/BetsDetail'
 export default {
   name: 'app',
   data () {
@@ -18,7 +20,7 @@ export default {
       ssq: []
     }
   },
-  components: { SsqInfo, SsqAnaly, PickedBalls },
+  components: { SsqInfo, SsqAnaly, PickedBets, BetsDetail },
   computed: {
     pickedBalls () {
       return this.$store.state.pickedBalls

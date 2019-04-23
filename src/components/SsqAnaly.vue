@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="ssq-block">
+  <section class="ssq-block">
     <div class="item-title">统计数据</div>
     <div class="item-label">样本数量：</div>
     <div class="item-value item-tongji">
@@ -32,14 +32,14 @@
           {{ ball[0] }}({{ ball[1] }})
       </span>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
 /**
  * 统计各色球的出现次数，然后按照降序排列
- * @param  {[Array]} arr [各期开球数据]
- * @return {[Array]}     [排完序的结果]
+ * @param  {Array} arr 各期开球数据
+ * @return {Array}     排完序的结果，例如 [[a,5],[b,3],[c,2]]
  */
 const sortable = arr => {
   const ballsCount = arr.reduce((elements, ele) => {
@@ -104,7 +104,7 @@ export default {
     },
     /**
      * 下注选球
-     * @param  {[type]}  num             [description]
+     * @param  {Number}  num             [description]
      * @param  {Boolean} [blueFlag=true] [description]
      */
     pickBalls (num, blueFlag = true) {

@@ -7,8 +7,8 @@
   @include size(100%, 10px);
 
   cursor: pointer;
-  background: #eee;
-  border-radius: 8px;
+  background: linear-gradient(to right, green, yellow, orange, red);
+  border-radius: 5px;
 }
 
 @mixin thumb() {
@@ -70,6 +70,9 @@ body {
   grid-column: 1 / 3;
   font-weight: bold;
   font-size: 20px;
+  margin-bottom: 1em;
+  color: rgb(60, 114, 196);
+  background: linear-gradient(rgb(60, 114, 196), rgb(60, 114, 196)) no-repeat left bottom / 5em 0.2em;
 }
 
 .item-label {
@@ -114,15 +117,15 @@ body {
   &::-webkit-slider-runnable-track {
     @include track;
   }
+  
+  // firefox 的 range 样式设置
+  &::-moz-range-track {
+    @include track;
+  }
 
   // 拖动点的一般状态
   &::-webkit-slider-thumb {
     @include thumb;
-  }
-
-  // firefox 的 range 样式设置
-  &::-moz-range-track {
-    @include track;
   }
 
   &::-moz-range-thumb {
@@ -184,7 +187,7 @@ body {
   }
   
   &.selected {
-    background-image: radial-gradient(circle at 30% 30%, #fff, transparent 60%);
+    background-image: radial-gradient(circle at 30% 30%, rgba(#fff, 0.8), transparent);
     box-shadow: 0.5rem 1rem 1rem #666;
   }
 }
@@ -199,8 +202,12 @@ body {
   color: blue;
 }
 
+.bets-num {
+  padding-right: 1em;
+}
+
 .list-complete-item {
-  font-size: 1.4em;
+  font-size: 1.2em;
   transition: all 0.5s;
 }
 .list-complete-enter,
