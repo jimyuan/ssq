@@ -87,13 +87,21 @@ export default {
      * 按钮事件，获取最新期数中的红篮球出现次数
      */
     handleData () {
+      // 每次按键都需要初始化以下变量
+      this.redBallsGroup = []
+      this.blueBallsGroup = []
+      this.pickedRedBalls = []
+      this.pickedBlueBalls = []
+      this.$store.commit('updatePickedBalls', {
+        red: [], blue: []
+      })
+
       // 获取父组件传来的完整历史数据
       const ssq = [...this.ssq]
       // 设定要选取的数据长度，默认 100 期
       const sampleCount = this.sampleCount
       if (this.max > sampleCount) ssq.length = sampleCount
-      this.redBallsGroup = []
-      this.blueBallsGroup = []
+
       for (let ball of ssq) {
         for (let num = 1; num <= 7; num++) {
           num === 7
@@ -125,7 +133,7 @@ export default {
           this.pickedRedBalls.splice(idx, 1)
         }
       }
-      // 将选中的数据存入状态机
+      // 将选中的数据存入 store
       this.$store.commit('updatePickedBalls', {
         red: this.pickedRedBalls,
         blue: this.pickedBlueBalls
